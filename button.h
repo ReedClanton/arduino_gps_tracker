@@ -5,11 +5,11 @@
 // NoOp
 
 /** Custom Import(s) **/
-// Assign Pin(s).
-#include "pins.h"
+// NoOp
 
 /** Global Variable(s) **/
 // NoOp
+
 
 int getButtonState() {
   return digitalRead(BUTTON_PIN);

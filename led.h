@@ -1,5 +1,11 @@
+/** External Import(s) **/
+// NoOp
+
 /** Define Macro(s) **/
-#define LED_PIN 6
+// NoOp
+
+/** Custom Import(s) **/
+// NoOp
 
 /** Global Variable(s) **/
 unsigned char led_pin = LED_PIN;

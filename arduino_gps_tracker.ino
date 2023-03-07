@@ -6,16 +6,9 @@
 #define LOOP_WAIT 0
 /* Default Value(s) */
 #define DEFAULT_BUZZER_TONE 85
-#define SERVO_MIN_POSITION 0
-#define SERVO_MAX_POSITION 179
-#define DEFAULT_SERVO_POSITION 0
 
 /** Custom Import(s) **/
-// Assign Pin(s).
-#include "pins.h"
-// Set What Hardware is Used.
 #include "hardware_config.h"
-// Code that interfaces with button.
 #include "button.h"
 #include "potentiometer.h"
 #include "output.h"
@@ -42,10 +35,10 @@ void setup() {
 
 void loop() {
   /* Potentiometer */
-  float pot_val = LOW;
+  float potVal = LOW;
   if (USE_POTENTIOMETER) {
-    pot_val = potentiometerFloat();
-    outputAdd("Pot:        ", String(pot_val));
+    potVal = potentiometerFloat();
+    outputAdd("Pot:        ", String(potVal));
   }
   /* Button Status */
   int buttonState = LOW;
@@ -59,7 +52,7 @@ void loop() {
   }
   /* Set LED Status */
   if (USE_LED) {
-    if (updateLedState(buttonState, pot_val) == HIGH) {
+    if (updateLedState(buttonState, potVal) == HIGH) {
       outputAdd("LED:          ", String("ON"));
     } else {
       outputAdd("LED:         ", String("OFF"));
@@ -69,14 +62,14 @@ void loop() {
   if (USE_PRESSURE_SENSOR) {
     outputAdd("Temp:       ", String(CelsiusToFahrenheit(Pressure.readTemperature())), " F");
     outputAdd("Pres:   ", String(Pressure.readPressure()), " Pa");
-    outputAdd("Alt:   ", String(Pressure.readAltitude()), " m");
+    outputAdd("Alt:     ", String(MetersToFeet(Pressure.readAltitude())), " ft");
   }
   /* Buzzer */
   if (USE_BUZZER) {
-    if (buttonState == HIGH || pot_val == HIGH) {
+    if (buttonState == HIGH || potVal == HIGH) {
       int buzzer_tone = DEFAULT_BUZZER_TONE;
-      if (pot_val != LOW) {
-        buzzer_tone = pot_val * 100;
+      if (potVal != LOW) {
+        buzzer_tone = potVal * 100;
       }
       tone(BUZZER_PIN, buzzer_tone);
       // TODO: fix jank.

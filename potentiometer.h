@@ -1,6 +1,12 @@
+/** External Import(s) **/
+// NoOp
+
 /** Define Macro(s) **/
 // Tracks default potentiometer pin.
 #define DEFAULT_POTENTIOMETER_PIN A0
+
+/** Custom Import(s) **/
+// NoOp
 
 /** Global Variable(s) **/
 // Tracks pin that's used (in case default isn't used).
