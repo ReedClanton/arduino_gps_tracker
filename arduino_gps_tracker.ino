@@ -2,18 +2,6 @@
 // NoOp
 
 /** Define Macro(s) **/
-/* Assign Pin(s) */
-#define BUTTON_PIN 4
-#define BUZZER_PIN 5
-#define DHTPIN 3
-/* Set What Hardware is Used */
-#define USE_POTENTIOMETER true
-#define USE_OLED true
-#define USE_SERIAL false
-#define USE_PRESSURE_SENSOR true
-#define USE_BUTTON true
-#define USE_LED true
-#define USE_BUZZER true
 /* Configuration Value(s) */
 #define LOOP_WAIT 0
 /* Default Value(s) */
@@ -23,6 +11,12 @@
 #define DEFAULT_SERVO_POSITION 0
 
 /** Custom Import(s) **/
+// Assign Pin(s).
+#include "pins.h"
+// Set What Hardware is Used.
+#include "hardware_config.h"
+// Code that interfaces with button.
+#include "button.h"
 #include "potentiometer.h"
 #include "output.h"
 #include "math.h"
@@ -54,10 +48,10 @@ void loop() {
     outputAdd("Pot:        ", String(pot_val));
   }
   /* Button Status */
-  int button_state = LOW;
+  int buttonState = LOW;
   if (USE_BUTTON) {
-    button_state = buttonState();
-    if (button_state == HIGH) {
+    buttonState = getButtonState();
+    if (buttonState == HIGH) {
       outputAdd("Button:       ", "ON");
     } else {
       outputAdd("Button:      ", "OFF");
@@ -65,7 +59,7 @@ void loop() {
   }
   /* Set LED Status */
   if (USE_LED) {
-    if (updateLedState(button_state, pot_val) == HIGH) {
+    if (updateLedState(buttonState, pot_val) == HIGH) {
       outputAdd("LED:          ", String("ON"));
     } else {
       outputAdd("LED:         ", String("OFF"));
@@ -79,7 +73,7 @@ void loop() {
   }
   /* Buzzer */
   if (USE_BUZZER) {
-    if (button_state == HIGH || pot_val == HIGH) {
+    if (buttonState == HIGH || pot_val == HIGH) {
       int buzzer_tone = DEFAULT_BUZZER_TONE;
       if (pot_val != LOW) {
         buzzer_tone = pot_val * 100;
@@ -102,8 +96,4 @@ void loop() {
   outputPublish();
   
   delay(LOOP_WAIT);
-}
-
-int buttonState() {
-  return digitalRead(BUTTON_PIN);
 }
