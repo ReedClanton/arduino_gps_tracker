@@ -1,6 +1,5 @@
 /** External Import(s) **/
 #include "Arduino_SensorKit.h"
-#include <Servo.h>
 
 /** Define Macro(s) **/
 /* Assign Pin(s) */
