@@ -1,5 +1,5 @@
 /** External Import(s) **/
-#include "Arduino_SensorKit.h"
+// NoOp
 
 /** Define Macro(s) **/
 /* Assign Pin(s) */
