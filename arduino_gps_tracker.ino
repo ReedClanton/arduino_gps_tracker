@@ -9,13 +9,14 @@
 #include "Led.h"
 #include "MyBuzzer.h"
 #include "Output.h"
-#include "potentiometer.h"
+#include "Potentiometer.h"
 #include "math.h"
 
 /** Global Variable(s) **/
 Led myLed;
 MyBuzzer myBuzzer;
 Output myOutput;
+Potentiometer* myPot;
 
 
 void setup() {
@@ -39,7 +40,9 @@ void setup() {
   }
 
   /* Input Setup */
-  if (USE_POTENTIOMETER) { potentiometerSetup(); }
+  if (USE_POTENTIOMETER) {
+    myPot = new Potentiometer();
+  }
   if (USE_BUTTON) { pinMode(BUTTON_PIN, INPUT); }
 
   /* Sensor Setup */
@@ -48,10 +51,10 @@ void setup() {
 
 void loop() {
   /* Potentiometer */
-  float potVal = LOW;
+  //float potVal = LOW;
   if (USE_POTENTIOMETER) {
-    potVal = potentiometerFloat();
-    myOutput.addOutput("Pot:        ", String(potVal));
+    //potVal = potentiometerFloat();
+    myOutput.addOutput("Pot:        ", String(myPot->floatVal()));
   }
   /* Button Status */
   int buttonState = LOW;
@@ -60,7 +63,7 @@ void loop() {
   }
   /* Set LED Status */
   if (USE_LED) {
-    if (buttonState == HIGH || potVal == HIGH) {
+    if (buttonState == HIGH || myPot->floatVal() == HIGH) {
       myLed.on();
     } else {
       myLed.off();
@@ -77,9 +80,9 @@ void loop() {
   }
   /* Buzzer */
   if (USE_BUZZER) {
-    if (buttonState == HIGH || potVal == HIGH) {
-      if (potVal != LOW) {
-        myBuzzer.setTone(potVal * 100);
+    if (buttonState == HIGH || myPot->floatVal() == HIGH) {
+      if (myPot->floatVal() != LOW) {
+        myBuzzer.setTone(myPot->floatVal() * 100);
       }
       myBuzzer.on();
     } else {
