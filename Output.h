@@ -25,18 +25,17 @@ class Output {
       // Track what form(s) of output will be used.
       oled_ = oled;
       serial_ = serial;
-      // I'd like to be able to do the bellow from within this class, but at the moment I can't figure out how.
       // Setup output methods requested by caller.
-      //if (oled_) {
-      //  Oled.begin();
+      if (oled_) {
+        Oled.begin();
         // Set screen rotation.
-      //  Oled.setFlipMode(true);
+        Oled.setFlipMode(true);
         // Set font.
-      //  Oled.setFont(u8x8_font_chroma48medium8_r);
-      //}
-      //if (serial_) {
-      //  Serial.begin(baud);
-      //}
+        Oled.setFont(u8x8_font_chroma48medium8_r);
+      }
+      if (serial_) {
+        Serial.begin(baud);
+      }
     }
 
     void addOutput(String msg) {
@@ -53,17 +52,14 @@ class Output {
 
     void publish() {
       if (oled_) {
-        /* OLED Reset */
-        // TODO
-        //Oled.clear();
         // Set screen origen.
         Oled.setCursor(0, 0);
-        /* OLED Publish & Reset */
+        // Publish & rest.
         Oled.print(outputText_);
         Oled.refreshDisplay();
       }
       if (serial_) {
-        /* Serial Publish & Reset */
+        // Publish & reset.
         Serial.println(outputText_);
       }
       outputText_ = "";

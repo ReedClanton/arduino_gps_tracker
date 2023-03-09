@@ -26,9 +26,9 @@ class MyBuzzer {
       tone_ = buzTone;
       state_ = state;
       if (state_) {
-        noTone(pin_);
-      } else {
         tone(pin_, tone_);
+      } else {
+        noTone(pin_);
       }
     }
 

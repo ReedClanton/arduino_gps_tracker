@@ -25,11 +25,7 @@ class Potentiometer {
       pinMode(pin_, INPUT);
     }
 
-    float floatVal(float startRange=0, float endRange=1) {
-      return startRange + ((endRange - startRange) / 1023) * analogRead(pin_);
-    }
-
-    int intVal(int startRange=0, int endRange=100) {
+    float val(float startRange=0, float endRange=1) {
       return startRange + ((endRange - startRange) / 1023) * analogRead(pin_);
     }
 };

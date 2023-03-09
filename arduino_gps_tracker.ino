@@ -15,23 +15,13 @@
 /** Global Variable(s) **/
 Led myLed;
 MyBuzzer myBuzzer;
-Output myOutput;
+Output* myOutput;
 Potentiometer* myPot;
 
 
 void setup() {
   /* Output Setup */
-  if (USE_SERIAL) {
-    Serial.begin(SERIAL_BAUD);
-  }
-  if (USE_OLED) {
-    Oled.begin();
-    // Set screen rotation.
-    Oled.setFlipMode(true);
-    // Set font.
-    Oled.setFont(u8x8_font_chroma48medium8_r);
-  }
-  myOutput = new Output(USE_OLED, USE_SERIAL);
+  myOutput = new Output();
   if (USE_LED) {
     myLed = Led(LED_PIN);
   }
@@ -40,21 +30,25 @@ void setup() {
   }
 
   /* Input Setup */
-  if (USE_POTENTIOMETER) {
-    myPot = new Potentiometer();
+  myPot = new Potentiometer();
+  if (USE_BUTTON) {
+    pinMode(BUTTON_PIN, INPUT);
   }
-  if (USE_BUTTON) { pinMode(BUTTON_PIN, INPUT); }
 
   /* Sensor Setup */
-  if (USE_PRESSURE_SENSOR) { Pressure.begin(); }
+  if (USE_PRESSURE_SENSOR) {
+    Pressure.begin();
+  }
 }
 
 void loop() {
   /* Potentiometer */
-  //float potVal = LOW;
-  if (USE_POTENTIOMETER) {
-    //potVal = potentiometerFloat();
-    myOutput.addOutput("Pot:        ", String(myPot->floatVal()));
+  myOutput->addOutput("Pot:        ", String(myPot->val()));
+  int potVal = myPot->val(0, 100);
+  if (potVal < 100) {
+    myOutput->addOutput("Pot:          ", String(potVal));
+  } else {
+    myOutput->addOutput("Pot:         ", String(potVal));
   }
   /* Button Status */
   int buttonState = LOW;
@@ -63,7 +57,7 @@ void loop() {
   }
   /* Set LED Status */
   if (USE_LED) {
-    if (buttonState == HIGH || myPot->floatVal() == HIGH) {
+    if (buttonState == HIGH || myPot->val() == HIGH) {
       myLed.on();
     } else {
       myLed.off();
@@ -72,17 +66,17 @@ void loop() {
   /* Pressure Sensor */
   if (USE_PRESSURE_SENSOR) {
     // Temperature.
-    myOutput.addOutput("Temp:       ", String(CelsiusToFahrenheit(Pressure.readTemperature())), " F");
+    myOutput->addOutput("Temp:       ", String(CelsiusToFahrenheit(Pressure.readTemperature())), " F");
     // Pressure.
-    myOutput.addOutput("Pres:   ", String(Pressure.readPressure()), " Pa");
+    myOutput->addOutput("Pres:   ", String(Pressure.readPressure()), " Pa");
     // Altitude.
-    myOutput.addOutput("Alt:     ", String(MetersToFeet(Pressure.readAltitude())), " ft");
+    myOutput->addOutput("Alt:     ", String(MetersToFeet(Pressure.readAltitude())), " ft");
   }
   /* Buzzer */
   if (USE_BUZZER) {
-    if (buttonState == HIGH || myPot->floatVal() == HIGH) {
-      if (myPot->floatVal() != LOW) {
-        myBuzzer.setTone(myPot->floatVal() * 100);
+    if (buttonState == HIGH || myPot->val() == HIGH) {
+      if (myPot->val() != LOW) {
+        myBuzzer.setTone(myPot->val(0, 100));
       }
       myBuzzer.on();
     } else {
@@ -90,7 +84,7 @@ void loop() {
     }
   }
 
-  myOutput.publish();
+  myOutput->publish();
   
   delay(LOOP_WAIT);
 }
