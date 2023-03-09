@@ -1,5 +1,5 @@
 /** External Code Import(s) **/
-// NoOp
+#include "Arduino_SensorKit.h"
 
 /** Define Macro(s) **/
 // NoOp
@@ -11,19 +11,27 @@
 #include "Output.h"
 #include "button.h"
 #include "potentiometer.h"
-#include "output.h"
 #include "math.h"
 
 /** Global Variable(s) **/
 Led myLed;
 MyBuzzer myBuzzer;
-//Output myOutput;
+Output myOutput;
 
 
 void setup() {
   /* Output Setup */
-  outputSetup(USE_OLED, USE_SERIAL);
-  //myOutput = Output(USE_OLED, USE_SERIAL);
+  if (USE_SERIAL) {
+    Serial.begin(SERIAL_BAUD);
+  }
+  if (USE_OLED) {
+    Oled.begin();
+    // Set screen rotation.
+    Oled.setFlipMode(true);
+    // Set font.
+    Oled.setFont(u8x8_font_chroma48medium8_r);
+  }
+  myOutput = new Output(USE_OLED, USE_SERIAL);
   if (USE_LED) {
     myLed = Led(LED_PIN);
   }
@@ -44,8 +52,7 @@ void loop() {
   float potVal = LOW;
   if (USE_POTENTIOMETER) {
     potVal = potentiometerFloat();
-    //myOutput.addOutput("Pot:        ", String(potVal));
-    outputAdd("Pot:        ", String(potVal));
+    myOutput.addOutput("Pot:        ", String(potVal));
   }
   /* Button Status */
   int buttonState = LOW;
@@ -63,14 +70,11 @@ void loop() {
   /* Pressure Sensor */
   if (USE_PRESSURE_SENSOR) {
     // Temperature.
-    //myOutput.addOutput("Temp:       ", String(CelsiusToFahrenheit(Pressure.readTemperature())), " F");
-    outputAdd("Temp:       ", String(CelsiusToFahrenheit(Pressure.readTemperature())), " F");
+    myOutput.addOutput("Temp:       ", String(CelsiusToFahrenheit(Pressure.readTemperature())), " F");
     // Pressure.
-    //myOutput.addOutput("Pres:   ", String(Pressure.readPressure()), " Pa");
-    outputAdd("Pres:   ", String(Pressure.readPressure()), " Pa");
+    myOutput.addOutput("Pres:   ", String(Pressure.readPressure()), " Pa");
     // Altitude.
-    //myOutput.addOutput("Alt:     ", String(MetersToFeet(Pressure.readAltitude())), " ft");
-    outputAdd("Alt:     ", String(MetersToFeet(Pressure.readAltitude())), " ft");
+    myOutput.addOutput("Alt:     ", String(MetersToFeet(Pressure.readAltitude())), " ft");
   }
   /* Buzzer */
   if (USE_BUZZER) {
@@ -84,8 +88,7 @@ void loop() {
     }
   }
 
-  //myOutput.publish();
-  outputPublish();
+  myOutput.publish();
   
   delay(LOOP_WAIT);
 }

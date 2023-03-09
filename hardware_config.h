@@ -14,5 +14,5 @@
 #define USE_BUZZER true
 /* Default Value(s) */
 #define DEFAULT_BUZZER_TONE 85
-#define LOOP_WAIT 750
+#define LOOP_WAIT 5
 #define SERIAL_BAUD 9600

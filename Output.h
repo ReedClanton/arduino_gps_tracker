@@ -21,21 +21,22 @@ class Output {
     String outputText_;
 
   public:
-    Output (bool oled = true, bool serial = true, int baud = SERIAL_BAUD) {
+    Output (bool oled = USE_OLED, bool serial = USE_SERIAL, int baud = SERIAL_BAUD) {
       // Track what form(s) of output will be used.
       oled_ = oled;
       serial_ = serial;
+      // I'd like to be able to do the bellow from within this class, but at the moment I can't figure out how.
       // Setup output methods requested by caller.
-      if (oled_) {
-        Oled.begin();
+      //if (oled_) {
+      //  Oled.begin();
         // Set screen rotation.
-        Oled.setFlipMode(true);
+      //  Oled.setFlipMode(true);
         // Set font.
-        Oled.setFont(u8x8_font_chroma48medium8_r);
-      }
-      if (serial_) {
-        Serial.begin(baud);
-      }
+      //  Oled.setFont(u8x8_font_chroma48medium8_r);
+      //}
+      //if (serial_) {
+      //  Serial.begin(baud);
+      //}
     }
 
     void addOutput(String msg) {
