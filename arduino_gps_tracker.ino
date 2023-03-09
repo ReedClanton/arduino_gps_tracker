@@ -1,5 +1,5 @@
 /** External Code Import(s) **/
-#include "Arduino_SensorKit.h"
+// NoOp
 
 /** Define Macro(s) **/
 // NoOp
@@ -9,7 +9,6 @@
 #include "Led.h"
 #include "MyBuzzer.h"
 #include "Output.h"
-#include "button.h"
 #include "potentiometer.h"
 #include "math.h"
 
@@ -57,7 +56,7 @@ void loop() {
   /* Button Status */
   int buttonState = LOW;
   if (USE_BUTTON) {
-    buttonState = getButtonState();
+    buttonState = digitalRead(BUTTON_PIN);
   }
   /* Set LED Status */
   if (USE_LED) {
