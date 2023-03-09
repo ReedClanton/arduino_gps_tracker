@@ -12,3 +12,7 @@
 #define USE_BUTTON true
 #define USE_LED true
 #define USE_BUZZER true
+/* Default Value(s) */
+#define DEFAULT_BUZZER_TONE 85
+#define LOOP_WAIT 750
+#define SERIAL_BAUD 9600

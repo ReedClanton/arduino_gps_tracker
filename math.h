@@ -15,6 +15,6 @@ int CelsiusToFahrenheit(float temp) {
   return (temp * (9/5)) + 32;
 }
 
-int MetersToFeet(float meters) {
+short MetersToFeet(float meters) {
   return meters * 3.28084;
 }
