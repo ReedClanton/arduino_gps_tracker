@@ -1,5 +1,5 @@
 /** External Code Import(s) **/
-// NoOp
+#include <Ethernet.h>
 
 /** Define Macro(s) **/
 // NoOp
@@ -17,17 +17,76 @@ Led myLed;
 MyBuzzer myBuzzer;
 Output* myOutput;
 Potentiometer* myPot;
+bool error = false;
 
 
 void setup() {
   /* Output Setup */
   myOutput = new Output();
+  
+  /* LED Setup */
   if (USE_LED) {
     myLed = Led(LED_PIN);
   }
+  
+  /* Buzzer Setup */
   if (USE_BUZZER) {
     myBuzzer = MyBuzzer();
   }
+  
+  /* Ethernet Setup */
+  EthernetServer server(80);
+  byte MAC[] = {
+    0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+  };
+  IPAddress IP(192, 168, 12, 2);
+  // Start the Ethernet connection.
+  Ethernet.begin(MAC, IP);
+  // Ethernet error checking.
+  while (Ethernet.hardwareStatus() == EthernetNoHardware) {
+    if (!error) {
+      // Display error message.
+      myOutput->addOutput("Ethernet shield");
+      myOutput->addOutput("not found.");
+      myOutput->publish();
+      // Turn buzzer one.
+      myBuzzer.on();
+      // Tack error state.
+      error = true;
+    }
+    // Flip state of LED.
+    //if (myLed.state() == HIGH) {
+    //  myLed.off();
+    //} else {
+    //  myLed.on();
+    //}
+  }
+  // Error resolved.
+  error = false;
+
+  while (Ethernet.linkStatus() == LinkOFF) {
+    if (!error) {
+      // Display error message.
+      myOutput->addOutput("Ethernet cable not connected.");
+      myOutput->publish();
+      // Turn buzzer on.
+      myBuzzer.on();
+      // Track error state.
+      error = true;
+    }
+    // Flit state of LED.
+    if (digitalRead(LED_PIN)) {
+      myLed.off();
+    } else {
+      myLed.on();
+    }
+  }
+  // Error resolved.
+  error = false;
+
+  // start the server
+  //server.begin();
+  //myOutput->addPersistentOutputText("IP:    ", String(Ethernet.localIP()));
 
   /* Input Setup */
   myPot = new Potentiometer();

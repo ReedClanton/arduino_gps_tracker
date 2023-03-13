@@ -1,7 +1,7 @@
 /** Define Macro(s) **/
 /* Assign Pin(s) */
 #define POTENTIOMETER_PIN A0
-#define BUTTON_PIN 4
+#define BUTTON_PIN 7
 #define BUZZER_PIN 5
 #define LED_PIN 6
 #define DHTPIN 3
