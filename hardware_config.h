@@ -8,11 +8,11 @@
 #define DHTPIN 3
 /* Set What Hardware is Used */
 #define USE_OLED true
-#define USE_SERIAL false
+#define USE_SERIAL true
 #define USE_PRESSURE_SENSOR true
 #define USE_BUTTON false
-#define USE_LED false
-#define USE_BUZZER false
+#define USE_LED true
+#define USE_BUZZER true
 /* Default Value(s) */
 #define DEFAULT_BUZZER_TONE 30
 #define LOOP_WAIT 0

@@ -66,6 +66,7 @@ void loop() {
   errorCheckEthernetShieldConnected();
   errorCheckEthernetCableConnected();
   // Display network info.
+  // TODO: Fix how IP shows up so it's human readable.
   myOutput->addOutput("IP:     ", String(Ethernet.localIP()));
   // Listen for incoming clients.
   EthernetClient client = server.available();
