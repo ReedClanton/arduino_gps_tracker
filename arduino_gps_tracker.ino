@@ -174,16 +174,20 @@ void errorCheckEthernetShieldConnected() {
       myOutput->addOutput("Ethernet shield");
       myOutput->addOutput("not found.");
       myOutput->publish();
-      // Turn buzzer one.
-      myBuzzer.on();
+      // Turn buzzer on.
+      if (USE_BUZZER) {
+        myBuzzer.on();
+      }
       // Tack error state.
       error = true;
     }
     // Flip state of LED.
-    if (myLed.state()) {
-      myLed.off();
-    } else {
-      myLed.on();
+    if (USE_LED) {
+      if (myLed.state()) {
+        myLed.off();
+      } else {
+        myLed.on();
+      }
     }
     delay(250);
   }
@@ -200,15 +204,19 @@ void errorCheckEthernetCableConnected() {
       myOutput->addOutput("not connected.");
       myOutput->publish();
       // Turn buzzer on.
-      myBuzzer.on();
+      if (USE_BUZZER) {
+        myBuzzer.on();
+      }
       // Track error state.
       error = true;
     }
     // Flit state of LED.
-    if (myLed.state()) {
-      myLed.off();
-    } else {
-      myLed.on();
+    if (USE_LED) {
+      if (myLed.state()) {
+        myLed.off();
+      } else {
+        myLed.on();
+      }
     }
     delay(250);
   }
